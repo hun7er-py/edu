@@ -1,0 +1,45 @@
+# Import the Active Directory module
+Import-Module ActiveDirectory
+
+# Path to the CSV file
+$csvFilePath = "C:\users.csv"
+
+# Import users from the CSV file
+$users = Import-Csv -Path $csvFilePath
+
+# Create nested OU's
+New-ADOrganizationalUnit -Name "Moos" -Path "DC=moos, DC=local"
+New-ADOrganizationalUnit -Name "Directie" -Path "OU=moos, DC=moos, DC=local"
+New-ADOrganizationalUnit -Name "Onderzoek" -Path "OU=moos, DC=moos, DC=local"
+New-ADOrganizationalUnit -Name "Directie" -Path "OU=moos, DC=moos, DC=local"
+
+
+# Iterate over each user in the CSV file
+foreach ($user in $users) {
+    # Construct the distinguished name (DN)
+    $distinguishedName = "CN=$($user.FirstName) $($user.LastName),$($user.OU)"
+    
+    # Construct the user principal name (UPN)
+    $userPrincipalName = "$($user.UserName)@moos.local"
+    
+    try {
+        # Create the user in Active Directory
+        New-ADUser `
+            -Name "$($user.FirstName) $($user.LastName)" `
+            -GivenName $user.FirstName `
+            -Surname $user.LastName `
+            -UserPrincipalName $userPrincipalName `
+            -SamAccountName $user.UserName `
+            -Path $user.OU `
+            -AccountPassword (ConvertTo-SecureString $user.Password -AsPlainText -Force) `
+            -Enabled $true
+
+        # Output success message
+        Write-Host "Successfully created user: $($user.UserName)"
+    }
+    catch {
+        # Output error message
+        Write-Host "Failed to create user: $($user.UserName)"
+        Write-Host $_.Exception.Message
+    }
+}
