@@ -8,11 +8,19 @@ $csvFilePath = "C:\users.csv"
 $users = Import-Csv -Path $csvFilePath
 
 # Create nested OU's
-New-ADOrganizationalUnit -Name "Moos" -Path "DC=moos, DC=local"
-New-ADOrganizationalUnit -Name "Directie" -Path "OU=moos, DC=moos, DC=local"
-New-ADOrganizationalUnit -Name "Onderzoek" -Path "OU=moos, DC=moos, DC=local"
-New-ADOrganizationalUnit -Name "Directie" -Path "OU=moos, DC=moos, DC=local"
-
+try{
+    New-ADOrganizationalUnit -Name "Moos" -Path "DC=moos, DC=local"
+    New-ADOrganizationalUnit -Name "Directie" -Path "OU=moos, DC=moos, DC=local"
+    New-ADOrganizationalUnit -Name "Onderzoek" -Path "OU=moos, DC=moos, DC=local"
+    New-ADOrganizationalUnit -Name "Logistiek" -Path "OU=moos, DC=moos, DC=local"
+    New-ADOrganizationalUnit -Name "Marketing" -Path "OU=moos, DC=moos, DC=local"
+    New-ADOrganizationalUnit -Name "Transport" -Path "OU=moos, DC=moos, DC=local"
+    New-ADOrganizationalUnit -Name "Extern" -Path "OU=moos, DC=moos, DC=local"
+}
+catch{
+        # Output error message
+        Write-Host $_.Exception.Message
+}
 
 # Iterate over each user in the CSV file
 foreach ($user in $users) {
