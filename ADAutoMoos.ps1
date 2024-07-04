@@ -13,12 +13,13 @@ $OUs = @(
     "Marketing",
     "Extern"
 )
+New-ADOrganizationalUnit -Name "MOOS" -Path "DC=moos,DC=local"
 
 # Create Organizational Units
 foreach ($OU in $OUs) {
     $ouPath = "OU=$OU,$domain"
     if (-not (Get-ADOrganizationalUnit -Filter "Name -eq '$OU'")) {
-        New-ADOrganizationalUnit -Name $OU -Path "DC=moos,DC=local"
+        New-ADOrganizationalUnit -Name $OU -Path "DC=MOOS,DC=moos,DC=local"
         Write-Host "Created OU: $ouPath"
     } else {
         Write-Host "OU already exists: $ouPath"
@@ -127,6 +128,9 @@ foreach ($folder in $subFolders) {
         }
     }
 
+    # Set permissions for each folder
+	$acl = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+    Set-Acl -Path $folderPath -AclObject $acl
 }
 
 
