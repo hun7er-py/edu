@@ -106,29 +106,30 @@ if (-not (Test-Path $sharePath)) {
 
 foreach ($folder in $subFolders) {
     $folderPath = Join-Path -Path $sharePath -ChildPath $folder
+    $groupR = "DL_${folder}_R"
+    $groupRWMX = "DL_${folder}_RWMX"
+    $groupFC = "DL_${folder}_FC"
+
     if (-not (Test-Path $folderPath)) {
         New-Item -Path $folderPath -ItemType Directory
         Write-Host "Created folder: $folderPath"
     } else {
         Write-Host "Folder already exists: $folderPath"
     }
-}
 
-# Create new groups for each folder in Share
-foreach ($folder in $subFolders) {
-    $groupR = "DL_${folder}_R"
-    $groupRWMX = "DL_${folder}_RWMX"
-    $groupFC = "DL_${folder}_FC"
-
+    # Create new groups for each folder in Shar
     foreach ($group in @($groupR, $groupRWMX, $groupFC)) {
         if (-not (Get-ADGroup -Filter "Name -eq '$group'")) {
-            New-ADGroup -Name $group -GroupScope DomainLocal -Path "DC=moos,DC=local"
+            New-ADGroup -Name $group -GroupScope DomainLocal -Path "OU=OU_DL,DC=moos,DC=local"
             Write-Host "Created group: $group"
         } else {
             Write-Host "Group already exists: $group"
         }
     }
+
 }
+
+
 
 # Add testgroup and set permissions on Productie folder
 $testGroupName = "testgroup"
