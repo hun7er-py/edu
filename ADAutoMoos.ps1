@@ -37,7 +37,7 @@ $users = @(
 
 # Create users
 foreach ($user in $users) {
-    $ouPath = "OU=$($user.OU),DC=moos,DC=local"
+    $ouPath = "OU=$($user.OU),OU=MOOS,DC=moos,DC=local"
     if (-not (Get-ADUser -Filter "Name -eq '$($user.Name)'")) {
         New-ADUser -Name $user.Name -GivenName $user.GivenName -Surname $user.Surname -UserPrincipalName "$($user.GivenName).$($user.Surname)@$domain" -SamAccountName "$($user.GivenName).$($user.Surname)" -Path $ouPath -AccountPassword (ConvertTo-SecureString "P@ssw0rd!" -AsPlainText -Force) -Enabled $true
         Write-Host "Created user: $($user.Name)"
@@ -84,7 +84,7 @@ $csvPath = "C:\path\to\your\users.csv"
 if (Test-Path $csvPath) {
     $csvUsers = Import-Csv -Path $csvPath
     foreach ($csvUser in $csvUsers) {
-        $ouPath = "OU=$($csvUser.OU),DC=moos,DC=local"
+        $ouPath = "OU=$($csvUser.OU),OU=MOOS,DC=moos,DC=local"
         if (-not (Get-ADUser -Filter "Name -eq '$($csvUser.Name)'")) {
             New-ADUser -Name $csvUser.Name -GivenName $csvUser.GivenName -Surname $csvUser.Surname -UserPrincipalName "$($csvUser.GivenName).$($csvUser.Surname)@$domain" -SamAccountName "$($csvUser.GivenName).$($csvUser.Surname)" -Path $ouPath -AccountPassword (ConvertTo-SecureString "P@ssw0rd!" -AsPlainText -Force) -Enabled $true
             Write-Host "Created user from CSV: $($csvUser.Name)"
@@ -121,7 +121,7 @@ foreach ($folder in $subFolders) {
     # Create new groups for each folder in Shar
     foreach ($group in @($groupR, $groupRWMX, $groupFC)) {
         if (-not (Get-ADGroup -Filter "Name -eq '$group'")) {
-            New-ADGroup -Name $group -GroupScope DomainLocal -Path "OU=OU_DL,DC=moos,DC=local"
+            New-ADGroup -Name $group -GroupScope DomainLocal -Path "OU=OU_DL,OU=MOOS,DC=moos,DC=local"
             Write-Host "Created group: $group"
         } else {
             Write-Host "Group already exists: $group"
@@ -138,7 +138,7 @@ foreach ($folder in $subFolders) {
 # Add testgroup and set permissions on Productie folder
 $testGroupName = "testgroup"
 if (-not (Get-ADGroup -Filter "Name -eq '$testGroupName'")) {
-    New-ADGroup -Name $testGroupName -GroupScope Global -Path "DC=moos,DC=local"
+    New-ADGroup -Name $testGroupName -GroupScope Global -Path "OU=MOOS,DC=moos,DC=local"
     Write-Host "Created group: $testGroupName"
 } else {
     Write-Host "Group already exists: $testGroupName"
