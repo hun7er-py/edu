@@ -129,8 +129,8 @@ foreach ($folder in $subFolders) {
     }
 
     # Set permissions for each folder
-	$acl = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
-    Set-Acl -Path $folderPath -AclObject $acl
+	#$acl = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+    #Set-Acl -Path $folderPath -AclObject $acl
 }
 
 
