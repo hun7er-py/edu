@@ -19,7 +19,7 @@ New-ADOrganizationalUnit -Name "MOOS" -Path "DC=moos,DC=local"
 foreach ($OU in $OUs) {
     $ouPath = "OU=$OU,$domain"
     if (-not (Get-ADOrganizationalUnit -Filter "Name -eq '$OU'")) {
-        New-ADOrganizationalUnit -Name $OU -Path "DC=MOOS,DC=moos,DC=local"
+        New-ADOrganizationalUnit -Name $OU -Path "OU=MOOS,DC=moos,DC=local"
         Write-Host "Created OU: $ouPath"
     } else {
         Write-Host "OU already exists: $ouPath"
@@ -61,7 +61,7 @@ $groups = @(
 # Create global groups
 foreach ($group in $groups) {
     if (-not (Get-ADGroup -Filter "Name -eq '$group'")) {
-        New-ADGroup -Name $group -GroupScope Global -Path "DC=moos,DC=local"
+        New-ADGroup -Name $group -GroupScope Global -Path "OU=MOOS,DC=moos,DC=local"
         Write-Host "Created group: $group"
     } else {
         Write-Host "Group already exists: $group"
