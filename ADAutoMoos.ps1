@@ -148,13 +148,6 @@
 		$groupRWMX = "DL_${folder}_RWMX"
 		$groupFC = "DL_${folder}_FC"
 
-		if (-not (Test-Path $folderPath)) {
-			New-Item -Path $folderPath -ItemType Directory
-			Write-Host "Created folder: $folderPath"
-		} else {
-			Write-Host "Folder already exists: $folderPath"
-		}
-
 		# Create new groups for each folder in Share
 		foreach ($group in @($groupR, $groupRWMX, $groupFC)) {
 			if (-not (Get-ADGroup -Filter "Name -eq '$group'")) {
@@ -164,7 +157,52 @@
 				Write-Host "Group already exists: $group"
 			}
 		}
-
+		if (-not (Test-Path $folderPath)) {
+			$tempFolder = New-Item -Path $folderPath -ItemType Directory
+			Write-Host "Created folder: $folderPath"
+		} else {
+			Write-Host "Folder already exists: $folderPath"
+		}
+		
+		#     ====================================================================
+		#     ||						TESTING									||
+		#	  ====================================================================
+		#
+		$testGroupSid = (Get-ADGroup -Filter "Name -eq $groupR").SID
+		$acl = new Acl
+		$permission = "ReadAndExecute"
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		$acl.AddAccessRule($accessRule)
+		Set-Acl -Path $folderPath -AclObject $acl
+		
+		$testGroupSid = (Get-ADGroup -Filter "Name -eq $groupRWMX").SID
+		
+		$permission = "ReadAndExecute"
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		$acl.AddAccessRule($accessRule)
+		Set-Acl -Path $folderPath -AclObject $acl
+		
+		$testGroupSid = (Get-ADGroup -Filter "Name -eq $groupRWMX").SID
+		$permission = "Write"
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		$acl.AddAccessRule($accessRule)
+		Set-Acl -Path $folderPath -AclObject $acl
+		
+		$testGroupSid = (Get-ADGroup -Filter "Name -eq $groupRWMX").SID
+		$permission = "Modify"
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		$acl.AddAccessRule($accessRule)
+		Set-Acl -Path $folderPath -AclObject $acl
+		
+		$testGroupSid = (Get-ADGroup -Filter "Name -eq $groupFC").SID
+		$permission = "FullControl"
+		$accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
+		$acl.AddAccessRule($accessRule)
+		Set-Acl -Path $folderPath -AclObject $acl
+		
+		
+		
+		
 		# Set permissions for each folder
 		#$acl = New-Object System.Security.AccessControl.FileSystemAccessRule($testGroupSid, $permission, "ContainerInherit, ObjectInherit", "None", "Allow")
 		#Set-Acl -Path $folderPath -AclObject $acl
