@@ -32,7 +32,6 @@ if [ -z "$DEPART_NAME" ]; then
     read
     exit 1
 else
-    DEPART_NAME=$1
     echo "Afdelingsnaam is $DEPART_NAME"
 fi
 
@@ -43,8 +42,6 @@ fi
         echo "Error, geen afdelingsnaam gevonden. Gelieve een naam in te geven :"
         read DEPART_NAME
     done
-
-    DEPART_NAME=$1
     echo "Afdelingsnaam is $DEPART_NAME"
 
 :'    
