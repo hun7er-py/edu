@@ -56,7 +56,7 @@ chmod 770 $LOGFILE
 
 #==================|| Maak een directory in de root directory ||===========================
 
-ROOT_DIR= "/$VOORNAAM"
+ROOT_DIR="/$VOORNAAM"
 echo "$(date -u) : Attempting to make folder $ROOT_DIR" >> $LOGFILE
 mkdir /$VOORNAAM
 echo "Hoofddirectory $ROOT_DIR is aangemaakt."
@@ -141,20 +141,18 @@ echo "Admin gebruiker $ADMIN is aangemaakt en is lid van $GROUP_NAME."
 
 #====================|| Verander ownership en rechten op de folders ||=====================
 echo "$(date -u) : Attempting to change owernship and permissions on $RW_DIR"  >> $LOGFILE
-chown $ADMIN:$GROUP $RW_DIR                 #changeowner 
+chown $ADMIN:$GROUP_NAME $RW_DIR                 #changeowner 
 chmod 775 $RW_DIR                           # admin: rwx, group: rwx, others: r-x -  is directory dus moet uitvoerbaar zijn
 chmod +t $RW_DIR                            # Sticky bit op RWdocs
 echo "$(date -u) : Succesfully changed owernship and permissions on $RW_DIR"  >> $LOGFILE
 echo "$(date -u) : Attempting to change owernship and permissions on $R0_DIR"  >> $LOGFILE
-chown $ADMIN:$GROUP $RO_DIR
+chown $ADMIN:$GROUP_NAME $RO_DIR
 chmod 750 $RO_DIR                           # admin: rwx, group: r--, others: ---    is directory dus moet uitvoerbaar zijn
 chmod +t $RO_DIR                            # Sticky bit op ROdocs
 echo "$(date -u) : Succesfully changed owernship and permissions on $R0_DIR"  >> $LOGFILE
 
 #==========================|| Maak folder en demodoc ||====================================
-echo "$(date -u) : Attempting to create demofolder and file"  >> $LOGFILE
-mkdir $ROOT_DIR/$VOORNAAM
-echo "$(date -u) : Succesfully created $ROOT_DIR/$VOORNAAM"  >> $LOGFILE
+echo "$(date -u) : Attempting to create demofile"  >> $LOGFILE
 touch $ROOT_DIR/$VOORNAAM/demodoc.maxim
 echo "$(date -u) : Succesfully created $ROOT_DIR/$VOORNAAM/demodoc.maxim"  >> $LOGFILE
 echo "This file is created by the script" > $ROOT_DIR/$VOORNAAM/demodoc.maxim
