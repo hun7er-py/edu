@@ -153,7 +153,7 @@ echo "$(date -u) : Succesfully changed owernship and permissions on $R0_DIR"  >>
 
 #==========================|| Maak folder en demodoc ||====================================
 echo "$(date -u) : Attempting to create demofile"  >> $LOGFILE
-touch $ROOT_DIR/$VOORNAAM/demodoc.maxim
+touch $ROOT_DIR/demodoc.maxim
 echo "$(date -u) : Succesfully created $ROOT_DIR/$VOORNAAM/demodoc.maxim"  >> $LOGFILE
 echo "This file is created by the script" > $ROOT_DIR/$VOORNAAM/demodoc.maxim
 echo "Demodoc created in $ROOT_DIR/$VOORNAAM"
