@@ -40,7 +40,7 @@ fi
 
 echo "Welkom bij maxim-maakafdeling. Logbestand : $LOGFILE"
 touch $LOGFILE
-chmod 770 $LOGFILE
+chmod 777 $LOGFILE
 
 #controleer alternatief : 
 
@@ -154,9 +154,9 @@ echo "$(date -u) : Succesfully changed owernship and permissions on $R0_DIR"  >>
 #==========================|| Maak folder en demodoc ||====================================
 echo "$(date -u) : Attempting to create demofile"  >> $LOGFILE
 touch $ROOT_DIR/demodoc.maxim
-echo "$(date -u) : Succesfully created $ROOT_DIR/$VOORNAAM/demodoc.maxim"  >> $LOGFILE
-echo "This file is created by the script" > $ROOT_DIR/$VOORNAAM/demodoc.maxim
-echo "Demodoc created in $ROOT_DIR/$VOORNAAM"
+echo "$(date -u) : Succesfully created $ROOT_DIR/demodoc.maxim"  >> $LOGFILE
+echo "This file is created by the script" > $ROOT_DIR/demodoc.maxim
+echo "Demodoc created in $ROOT_DIR"
 
 #=====|| Laat de eerste 5 groepen zien uit het groepenbestand in alfabetische volgorde ||=====
 echo "De eerste 5 groepen in alfabetische volgorde zijn:"
